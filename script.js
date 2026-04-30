@@ -1,12 +1,20 @@
 function openInvite() {
   document.querySelector(".cover").style.display = "none";
   document.getElementById("content").style.display = "block";
+  document.getElementById("music").play();
+}
+// NAMA TAMU
+const urlParams = new URLSearchParams(window.location.search);
+const guestName = urlParams.get("to");
+if (guestName) {
+  document.getElementById("guest").innerText = guestName;
+}
 
   // PLAY MUSIC
   document.getElementById("music").play();
 }
 
-// COUNTDOWN
+// TIMER
 const targetDate = new Date("May 7, 2026 00:00:00").getTime();
 
 setInterval(() => {
