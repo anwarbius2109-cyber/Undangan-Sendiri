@@ -21,13 +21,6 @@ button {
   border: none;
   border-radius: 20px;
 }
-
-.content {
-  display: none;
-  background: #0f172a;
-  padding: 40px 20px;
-}
-
 .couple {
   width: 200px;
   border-radius: 20px;
