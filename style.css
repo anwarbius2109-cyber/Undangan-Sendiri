@@ -48,3 +48,24 @@ button {
   border-radius: 20px;
   color: white;
 }
+/* TAMBAHKAN DI PALING BAWAH */
+
+.section {
+  padding: 40px 20px;
+  background: #0f172a;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.section h2 {
+  margin-bottom: 15px;
+}
+
+#content {
+  display: none;
+}
+
+footer {
+  padding: 20px;
+  background: black;
+  font-size: 12px;
+}
