@@ -1,0 +1,50 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+  color: white;
+  text-align: center;
+}
+
+.cover {
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  backdrop-filter: brightness(0.7);
+}
+
+button {
+  padding: 12px 25px;
+  background: gold;
+  border: none;
+  border-radius: 20px;
+}
+
+.content {
+  display: none;
+  background: #0f172a;
+  padding: 40px 20px;
+}
+
+.couple {
+  width: 200px;
+  border-radius: 20px;
+  margin: 20px 0;
+}
+
+.event {
+  background: rgba(255,255,255,0.1);
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.wa {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #25D366;
+  border-radius: 20px;
+  color: white;
+}
