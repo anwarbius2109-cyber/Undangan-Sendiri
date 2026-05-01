@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CMS Admin</title>
+  <script src="js/cms.js" defer></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 p-6">
+
+  <div class="max-w-xl mx-auto bg-white p-6 rounded shadow">
+
+    <h1 class="text-2xl font-bold mb-4">CMS Portfolio</h1>
+
+    <input id="title" placeholder="Title" class="w-full p-2 border mb-2">
+    <input id="image" placeholder="Image URL" class="w-full p-2 border mb-2">
+    <input id="demo" placeholder="Demo URL" class="w-full p-2 border mb-2">
+
+    <button onclick="addItem()" class="bg-green-600 text-white px-4 py-2 rounded">
+      Add
+    </button>
+
+    <button onclick="saveToGitHub()" class="bg-blue-600 text-white px-4 py-2 rounded">
+      Save to GitHub
+    </button>
+
+    <div id="list" class="mt-4"></div>
+
+  </div>
+
+</body>
+</html>
