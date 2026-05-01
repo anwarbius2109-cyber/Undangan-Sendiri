@@ -1,109 +1,40 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Undangan Pernikahan</title>
-
-  <link rel="icon" href="assets/icon/favicon.ico">
-  <link rel="stylesheet" href="style.css">
+  <title>Admin Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
 
-<!-- AUDIO -->
-<audio id="music" src="assets/audio/music.mp3" loop></audio>
+<body class="bg-gray-950 flex items-center justify-center h-screen text-white">
 
-<!-- 1. COVER -->
-<section class="cover" style="background-image:url('assets/img/cover.jpg')">
-  <h1>Undangan Pernikahan</h1>
-  <h2>Arif & Pasangan</h2>
-  <p>07 Mei 2026</p>
+  <div class="bg-gray-900 p-6 rounded-2xl w-80">
+    <h1 class="text-xl font-bold mb-4">Admin Login</h1>
 
-  <p>Kepada Yth:</p>
-  <p id="guest"></p>
+    <input id="pass" type="password"
+      class="w-full p-2 rounded bg-gray-800 mb-3"
+      placeholder="Password">
 
-  <button onclick="openInvite()">Buka Undangan</button>
-</section>
+    <button onclick="login()"
+      class="w-full bg-blue-600 py-2 rounded-xl">
+      Login
+    </button>
 
-<!-- MAIN -->
-<div id="content">
+    <p id="msg" class="text-red-400 text-sm mt-2"></p>
+  </div>
 
-<!-- 2. SALAM & DOA -->
-<section class="section">
-  <h2>Assalamu’alaikum Wr. Wb</h2>
-  <p>Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud menyelenggarakan pernikahan kami.</p>
-</section>
+<script>
+function login(){
+  const pass = document.getElementById("pass").value;
 
-<!-- 3. PROFIL MEMPELAI -->
-<section class="section">
-  <h2>Mempelai</h2>
-  <img src="assets/img/couple.jpg" class="couple">
-  <h3>Arif</h3>
-  <p>Putra dari Bapak ... & Ibu ...</p>
-  <h3>&</h3>
-  <h3>Pasangan</h3>
-  <p>Putri dari Bapak ... & Ibu ...</p>
-</section>
+  // ganti password di sini
+  if(pass === "admin123"){
+    localStorage.setItem("auth", "true");
+    window.location.href = "index.html";
+  } else {
+    document.getElementById("msg").innerText = "Password salah";
+  }
+}
+</script>
 
-<!-- 4. ACARA -->
-<section class="section">
-  <h2>Acara</h2>
-  <p><b>Akad:</b> 07 Mei 2026 - 09:00 WIB</p>
-  <p><b>Resepsi:</b> 07 Mei 2026 - 11:00 WIB</p>
-  <p><b>Lokasi:</b> Alor Pura</p>
-</section>
-
-<!-- 5. MAPS -->
-<section class="section">
-  <h2>Lokasi</h2>
-  <iframe 
-    src="https://maps.google.com/maps?q=Alor%20Pura&t=&z=13&ie=UTF8&iwloc=&output=embed"
-    width="100%" height="250" style="border:0;">
-  </iframe>
-</section>
-
-<!-- 6. TIMER -->
-<section class="section">
-  <h2>Menuju Hari Bahagia</h2>
-  <p id="timer"></p>
-</section>
-
-<!-- 7. WEDDING GIFT -->
-<section class="section">
-  <h2>Wedding Gift</h2>
-  <p>Doa restu Anda adalah hadiah terindah.</p>
-  <p>BCA: 123456789 a.n Arif</p>
-</section>
-
-<!-- 8. LOVE STORY -->
-<section class="section">
-  <h2>Love Story</h2>
-  <p><b>Awal Bertemu:</b> Alor Pura</p>
-  <p><b>Pendekatan:</b> 2019</p>
-  <p><b>Lamaran:</b> Ditunda</p>
-  <p><b>Pernikahan:</b> 07 Mei 2026</p>
-</section>
-
-<!-- 9. TURUT MENGUNDANG -->
-<section class="section">
-  <h2>Turut Mengundang</h2>
-  <p>LIAUDIN, S.H</p>
-  <p>SARIPUDIN</p>
-  <p>GUNTORO</p>
-</section>
-
-<!-- 10. PENUTUP -->
-<section class="section">
-  <h2>Terima Kasih</h2>
-  <p>Merupakan suatu kehormatan bagi kami apabila Anda berkenan hadir.</p>
-</section>
-
-<footer>
-  <p>© 2026 Undangan Digital</p>
-</footer>
-
-</div>
-
-<script src="script.js"></script>
 </body>
 </html>
