@@ -1,68 +1,22 @@
-// cek login
-if(localStorage.getItem("auth") !== "true"){
-  window.location.href = "login.html";
-}
+fetch("./data/portfolio.json")
+  .then(res => res.json())
+  .then(data => {
+    const container = document.getElementById("portfolio")
 
-// ambil data
-let data = JSON.parse(localStorage.getItem("portfolio")) || [];
+    container.innerHTML = data.map(item => `
+      <div class="bg-white rounded shadow overflow-hidden">
 
-render();
+        <img src="${item.image}" class="w-full h-56 object-cover">
 
-function addItem(){
-  const title = document.getElementById("title").value;
-  const image = document.getElementById("image").value;
-  const demo = document.getElementById("demo").value;
-  const category = document.getElementById("category").value;
+        <div class="p-4">
+          <h3 class="font-bold text-lg">${item.title}</h3>
 
-  data.push({
-    id: Date.now(),
-    title,
-    image,
-    demo,
-    category
-  });
+          <a href="${item.demo}" target="_blank"
+            class="block mt-3 bg-blue-600 text-white text-center py-2 rounded">
+            Preview
+          </a>
+        </div>
 
-  save();
-  render();
-}
-
-function render(){
-  const list = document.getElementById("list");
-  list.innerHTML = "";
-
-  data.forEach(item => {
-    list.innerHTML += `
-      <div class="bg-gray-900 p-4 rounded-xl">
-        <img src="${item.image}" class="rounded mb-2"/>
-
-        <h2 class="font-bold">${item.title}</h2>
-        <p class="text-sm text-gray-400">${item.category}</p>
-
-        <a href="${item.demo}" target="_blank"
-          class="text-blue-400 text-sm block mt-2">
-          Preview
-        </a>
-
-        <button onclick="hapus(${item.id})"
-          class="mt-3 bg-red-600 px-3 py-1 rounded">
-          Delete
-        </button>
       </div>
-    `;
-  });
-}
-
-function hapus(id){
-  data = data.filter(i => i.id !== id);
-  save();
-  render();
-}
-
-function save(){
-  localStorage.setItem("portfolio", JSON.stringify(data));
-}
-
-function logout(){
-  localStorage.removeItem("auth");
-  window.location.href = "login.html";
-}
+    `).join("")
+  })
