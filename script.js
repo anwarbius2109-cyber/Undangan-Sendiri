@@ -1,31 +1,68 @@
-function openInvite() {
-  document.querySelector(".cover").style.display = "none";
-  document.getElementById("content").style.display = "block";
-  document.getElementById("music").play();
-}
-// NAMA TAMU
-const urlParams = new URLSearchParams(window.location.search);
-const guestName = urlParams.get("to");
-if (guestName) {
-  document.getElementById("guest").innerText = guestName;
+// cek login
+if(localStorage.getItem("auth") !== "true"){
+  window.location.href = "login.html";
 }
 
-  // PLAY MUSIC
-  document.getElementById("music").play();
+// ambil data
+let data = JSON.parse(localStorage.getItem("portfolio")) || [];
+
+render();
+
+function addItem(){
+  const title = document.getElementById("title").value;
+  const image = document.getElementById("image").value;
+  const demo = document.getElementById("demo").value;
+  const category = document.getElementById("category").value;
+
+  data.push({
+    id: Date.now(),
+    title,
+    image,
+    demo,
+    category
+  });
+
+  save();
+  render();
 }
 
-// TIMER
-const targetDate = new Date("May 7, 2026 00:00:00").getTime();
+function render(){
+  const list = document.getElementById("list");
+  list.innerHTML = "";
 
-setInterval(() => {
-  const now = new Date().getTime();
-  const gap = targetDate - now;
+  data.forEach(item => {
+    list.innerHTML += `
+      <div class="bg-gray-900 p-4 rounded-xl">
+        <img src="${item.image}" class="rounded mb-2"/>
 
-  const d = Math.floor(gap / (1000 * 60 * 60 * 24));
-  const h = Math.floor((gap / (1000 * 60 * 60)) % 24);
-  const m = Math.floor((gap / (1000 * 60)) % 60);
-  const s = Math.floor((gap / 1000) % 60);
+        <h2 class="font-bold">${item.title}</h2>
+        <p class="text-sm text-gray-400">${item.category}</p>
 
-  document.getElementById("timer").innerHTML =
-    d + " Hari " + h + " Jam " + m + " Menit " + s + " Detik";
-}, 1000);
+        <a href="${item.demo}" target="_blank"
+          class="text-blue-400 text-sm block mt-2">
+          Preview
+        </a>
+
+        <button onclick="hapus(${item.id})"
+          class="mt-3 bg-red-600 px-3 py-1 rounded">
+          Delete
+        </button>
+      </div>
+    `;
+  });
+}
+
+function hapus(id){
+  data = data.filter(i => i.id !== id);
+  save();
+  render();
+}
+
+function save(){
+  localStorage.setItem("portfolio", JSON.stringify(data));
+}
+
+function logout(){
+  localStorage.removeItem("auth");
+  window.location.href = "login.html";
+}
