@@ -1,40 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Admin Login</title>
+  <title>Portfolio CMS</title>
+  <script src="js/app.js" defer></script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-950 flex items-center justify-center h-screen text-white">
+<body class="bg-gray-100">
 
-  <div class="bg-gray-900 p-6 rounded-2xl w-80">
-    <h1 class="text-xl font-bold mb-4">Admin Login</h1>
+  <div class="max-w-6xl mx-auto p-6">
 
-    <input id="pass" type="password"
-      class="w-full p-2 rounded bg-gray-800 mb-3"
-      placeholder="Password">
+    <h1 class="text-3xl font-bold mb-6 text-center">
+      Portfolio Kami
+    </h1>
 
-    <button onclick="login()"
-      class="w-full bg-blue-600 py-2 rounded-xl">
-      Login
-    </button>
+    <div id="portfolio" class="grid md:grid-cols-3 gap-6"></div>
 
-    <p id="msg" class="text-red-400 text-sm mt-2"></p>
   </div>
-
-<script>
-function login(){
-  const pass = document.getElementById("pass").value;
-
-  // ganti password di sini
-  if(pass === "admin123"){
-    localStorage.setItem("auth", "true");
-    window.location.href = "index.html";
-  } else {
-    document.getElementById("msg").innerText = "Password salah";
-  }
-}
-</script>
 
 </body>
 </html>
