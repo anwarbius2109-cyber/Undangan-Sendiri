@@ -1,43 +1,179 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Admin Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PRO CMS Portfolio</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
+<body class="bg-gray-100">
 
-<body class="bg-gray-950 text-white p-6">
-
-<!-- HEADER -->
-<div class="flex justify-between items-center mb-6">
-  <h1 class="text-2xl font-bold">Dashboard Portfolio</h1>
-  <button onclick="logout()" class="bg-red-600 px-4 py-2 rounded-xl">
-    Logout
-  </button>
+<!-- LOGIN SCREEN -->
+<div id="loginScreen" class="fixed inset-0 flex items-center justify-center bg-black/60">
+  <div class="bg-white p-6 rounded-xl w-80">
+    <h2 class="text-xl font-bold mb-4">Admin Login</h2>
+    <input id="password" type="password" placeholder="Password" class="w-full border p-2 rounded mb-3">
+    <button onclick="login()" class="w-full bg-blue-600 text-white py-2 rounded">Login</button>
+  </div>
 </div>
 
-<!-- FORM -->
-<div class="bg-gray-900 p-4 rounded-xl mb-6">
-  <input id="title" placeholder="Title"
-    class="w-full p-2 mb-2 bg-gray-800 rounded">
+<!-- DASHBOARD -->
+<div id="app" class="hidden p-6 max-w-6xl mx-auto">
 
-  <input id="image" placeholder="Image URL"
-    class="w-full p-2 mb-2 bg-gray-800 rounded">
+  <h1 class="text-2xl font-bold mb-4">PRO CMS Portfolio 🚀</h1>
 
-  <input id="demo" placeholder="Demo Link"
-    class="w-full p-2 mb-2 bg-gray-800 rounded">
+  <!-- FORM -->
+  <div class="bg-white p-4 rounded shadow mb-6">
+    <div class="grid md:grid-cols-3 gap-2">
+      <input id="title" placeholder="Judul" class="border p-2 rounded">
+      <input id="image" placeholder="Image URL" class="border p-2 rounded">
+      <input id="demo" placeholder="Demo URL" class="border p-2 rounded">
+    </div>
 
-  <input id="category" placeholder="Category"
-    class="w-full p-2 mb-2 bg-gray-800 rounded">
+    <div class="flex gap-2 mt-3">
+      <button onclick="addItem()" class="bg-green-600 text-white px-4 py-2 rounded">Save</button>
+      <button onclick="resetForm()" class="bg-gray-500 text-white px-4 py-2 rounded">Reset</button>
+    </div>
+  </div>
 
-  <button onclick="addItem()"
-    class="bg-green-600 px-4 py-2 rounded-xl">
-    Tambah
-  </button>
+  <!-- ACTION -->
+  <div class="flex flex-wrap gap-2 mb-4">
+    <button onclick="exportJSON()" class="bg-blue-600 text-white px-3 py-2 rounded">Export JSON</button>
+    <input type="file" accept="application/json" onchange="importJSON(event)" class="border p-2 rounded">
+    <button onclick="syncGitHub()" class="bg-black text-white px-3 py-2 rounded">Sync GitHub</button>
+  </div>
+
+  <!-- LIST -->
+  <div id="list" class="grid md:grid-cols-3 gap-4"></div>
+
 </div>
 
-<!-- LIST -->
-<div id="list" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+<script>
+const ADMIN_PASS = "123456";
+let data = JSON.parse(localStorage.getItem('portfolio')) || [];
+let editIndex = null;
 
-<script src="script.js"></script>
+function login(){
+  const pass = document.getElementById('password').value;
+  if(pass === ADMIN_PASS){
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').classList.remove('hidden');
+  } else {
+    alert('Password salah');
+  }
+}
+
+function render(){
+  const list = document.getElementById('list');
+  list.innerHTML = '';
+
+  data.forEach((item,i)=>{
+    list.innerHTML += `
+      <div class="bg-white rounded shadow p-3" draggable="true" ondragstart="dragStart(${i})" ondrop="dropItem(${i})" ondragover="event.preventDefault()">
+        <img src="${item.image}" class="h-40 w-full object-cover rounded">
+        <h3 class="font-bold mt-2">${item.title}</h3>
+        <a href="${item.demo}" target="_blank" class="text-blue-500 text-sm">Preview</a>
+
+        <div class="flex gap-2 mt-2">
+          <button onclick="editItem(${i})" class="text-yellow-500">Edit</button>
+          <button onclick="deleteItem(${i})" class="text-red-500">Delete</button>
+        </div>
+      </div>
+    `;
+  });
+
+  localStorage.setItem('portfolio', JSON.stringify(data));
+}
+
+function addItem(){
+  const title = titleInput.value;
+  const image = imageInput.value;
+  const demo = demoInput.value;
+
+  if(!title || !image || !demo){
+    alert('Isi semua field'); return;
+  }
+
+  if(editIndex !== null){
+    data[editIndex] = {title,image,demo};
+    editIndex = null;
+  } else {
+    data.push({title,image,demo});
+  }
+
+  resetForm();
+  render();
+}
+
+const titleInput = document.getElementById('title');
+const imageInput = document.getElementById('image');
+const demoInput = document.getElementById('demo');
+
+function resetForm(){
+  titleInput.value = '';
+  imageInput.value = '';
+  demoInput.value = '';
+  editIndex = null;
+}
+
+function editItem(i){
+  titleInput.value = data[i].title;
+  imageInput.value = data[i].image;
+  demoInput.value = data[i].demo;
+  editIndex = i;
+}
+
+function deleteItem(i){
+  data.splice(i,1);
+  render();
+}
+
+function exportJSON(){
+  const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'portfolio.json';
+  a.click();
+}
+
+function importJSON(event){
+  const file = event.target.files[0];
+  if(!file || file.type !== 'application/json'){
+    alert('File harus JSON'); return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    try{
+      const parsed = JSON.parse(e.target.result);
+      if(!Array.isArray(parsed)) throw new Error();
+      data = parsed;
+      render();
+    }catch{
+      alert('JSON tidak valid');
+    }
+  };
+  reader.readAsText(file);
+}
+
+// ===== DRAG DROP =====
+let dragIndex = null;
+function dragStart(i){ dragIndex = i; }
+function dropItem(i){
+  const temp = data[dragIndex];
+  data.splice(dragIndex,1);
+  data.splice(i,0,temp);
+  render();
+}
+
+// ===== GITHUB SYNC (OPTIONAL) =====
+async function syncGitHub(){
+  alert('Butuh GitHub Token & repo setup (mode demo dulu)');
+}
+
+render();
+</script>
+
 </body>
 </html>
