@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "title": "Elegant Wedding",
+    "image": "https://images.unsplash.com/photo-1",
+    "demo": "https://example.com"
+  },
+  {
+    "id": 2,
+    "title": "Modern Invitation",
+    "image": "https://images.unsplash.com/photo-2",
+    "demo": "https://example.com"
+  }
+]
